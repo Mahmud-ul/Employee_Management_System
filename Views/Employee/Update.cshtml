@@ -1,0 +1,97 @@
+﻿@model Employee_Management_System.Models.Employee
+
+@{
+    ViewData["Title"] = "Update";
+}
+
+<h4>Update Employee</h4>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form id="myForm" asp-action="Update">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row mb-3">
+                <label asp-for="Name" class="col-md-2 col-form-label">Name</label>
+                <div class="col-md-6">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="Email" class="col-md-2 col-form-label">Email</label>
+                <div class="col-md-6">
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="Phone" class="col-md-2 col-form-label">Phone</label>
+                <div class="col-md-6">
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="DepartmentID" class="col-md-2 col-form-label">Department</label>
+                <div class="col-md-6">
+                    <select id="Publisher" asp-for="DepartmentID" class="form-control">
+                        <option value="">--Select Department--</option>
+                        @foreach (var i in ViewBag.Department)
+                        {
+                            <option value="@i.ID">@i.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="DepartmentID" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="Position" class="col-md-2 col-form-label">Position</label>
+                <div class="col-md-6">
+                    <input asp-for="Position" class="form-control" />
+                    <span asp-validation-for="Position" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="JoiningDate" class="col-md-2 col-form-label">Joining Date</label>
+                <div class="col-md-6">
+                    <input asp-for="JoiningDate" class="form-control" />
+                    <span asp-validation-for="JoiningDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <input class="form-check-input" asp-for="Status" />
+                    @Html.DisplayNameFor(model => model.Status)
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <input type="submit" value="Update" class="btn btn-outline-success" />
+                    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#myForm").submit(function (e) {
+            debugger;
+            if (!$("#myForm").valid()) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+

@@ -1,0 +1,72 @@
+﻿@model Employee_Management_System.Models.PerformanceReview
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h4>Create Performance Review</h4>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form id="myForm" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row mb-3">
+                <label asp-for="EmployeeID" class="col-md-2 col-form-label">Employee</label>
+                <div class="col-md-6">
+                    <select id="EmployeeID" asp-for="EmployeeID" class="form-control">
+                        <option value="">--Select Employee--</option>
+                        @foreach (var i in ViewBag.Employee)
+                        {
+                            <option value="@i.ID">@i.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="EmployeeID" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="ReviewDate" class="col-md-2 col-form-label">Review Date</label>
+                <div class="col-md-6">
+                    <input asp-for="ReviewDate" class="form-control" />
+                    <span asp-validation-for="ReviewDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="ReviewScore" class="col-md-2 col-form-label">Review Score</label>
+                <div class="col-md-6">
+                    <input asp-for="ReviewScore" class="form-control" />
+                    <span asp-validation-for="ReviewScore" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="ReviewNotes" class="col-md-2 col-form-label">Review Note</label>
+                <div class="col-md-6">
+                    <input asp-for="ReviewNotes" class="form-control" />
+                    <span asp-validation-for="ReviewNotes" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <input type="submit" value="Create" class="btn btn-outline-success" />
+                    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#myForm").submit(function (e) {
+            debugger;
+            if (!$("#myForm").valid()) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>

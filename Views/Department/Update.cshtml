@@ -1,0 +1,76 @@
+﻿@model Employee_Management_System.Models.Department
+@{
+    ViewData["Title"] = "Update";
+}
+
+
+
+<h4>Update Department</h4>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form id="myForm" asp-action="Update">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row mb-3">
+                <label asp-for="Name" class="col-md-2 col-form-label">Department Name</label>
+                <div class="col-md-6">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="ManagerID" class="col-md-2 col-form-label">Employee</label>
+                <div class="col-md-6">
+                    <select id="EmployeeID" asp-for="ManagerID" class="form-control">
+                        <option value="">--Select Manager--</option>
+                        @foreach (var i in ViewBag.Manager)
+                        {
+                            <option value="@i.ID">@i.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="ManagerID" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="Budget" class="col-md-2 col-form-label">Budget</label>
+                <div class="col-md-6">
+                    <input asp-for="Budget" class="form-control" />
+                    <span asp-validation-for="Budget" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <input class="form-check-input" asp-for="Status" />
+                    @Html.DisplayNameFor(model => model.Status)
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <input type="submit" value="Update" class="btn btn-outline-success" />
+                    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#myForm").submit(function (e) {
+            debugger;
+            if (!$("#myForm").valid()) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+
+
+

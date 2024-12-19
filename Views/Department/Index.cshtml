@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Employee_Management_System.ViewModel.DepartmentViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Department List</h4>
+<hr />
+
+<p>
+    <a class="btn btn-outline-success" asp-action="Create">Add Department</a>
+</p>
+
+<table id="example" class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Manager</th>
+            <th>Budget</th>
+            <th>Active</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Manager</td>
+            <td>@item.Budget</td>
+            <td>@(item.Status ? "Yes" : "No")</td>
+            <td>
+                @Html.ActionLink("Update", "Update", new { id = item.ID }, new { @class = "btn btn-outline-primary" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID }, new
+                    {
+                        @class = "btn btn-outline-danger",
+                        onclick = "return confirm('Are you sure?');"
+                    })
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

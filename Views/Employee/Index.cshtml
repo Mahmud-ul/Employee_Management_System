@@ -1,0 +1,172 @@
+﻿@model IEnumerable<Employee_Management_System.ViewModel.EmployeeViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Employee List</h4>
+<hr />
+
+<p>
+    <a class="btn btn-outline-success" asp-action="Create">Add Employee</a>
+</p>
+
+@* Filter Start*@
+<form method="GET" asp-action="Index">
+    <div class="row">
+        <div class="col-md-2">
+            <label for="NameFilter">Name</label>
+            <input type="text" id="NameFilter" name="NameFilter" class="form-control"/>
+        </div>
+        <div class="col-md-2">
+            <label for="DepartmentFilter">Department</label>
+            <select id="DepartmentFilter" name="DepartmentFilter" class="form-control">
+                <option value="">All</option>
+                @foreach (var dept in ViewBag.Department)
+                {
+                    <option value="@dept.ID">@dept.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="EmailFilter">Email</label>
+            <input type="text" id="EmailFilter" name="EmailFilter" class="form-control" />
+        </div>       
+        <div class="col-md-2">
+            <label for="PhoneFilter">Phone</label>
+            <input type="text" id="PhoneFilter" name="PhoneFilter" class="form-control" />
+        </div>        
+        <div class="col-md-2">
+            <label for="PositionFilter">Position</label>
+            <input type="text" id="PositionFilter" name="PositionFilter" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label for="MinimumScore">Min. Score</label>
+            <select id="MinimumScore" name="MinimumScore" class="form-control">
+                <option value="">None</option>
+                @for(int i = 1; i < 11; i++)
+                {
+                    <option value="@i">@i</option>
+                }               
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="MaximumScore">Max. Score</label>
+            <select id="MaximumScore" name="MaximumScore" class="form-control">
+                <option value="">None</option>
+                @for (int i = 1; i < 11; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+        </div>      
+        <div class="col-md-2">
+            <label for="StatusFilter">Active</label>
+            <select id="StatusFilter" name="StatusFilter" class="form-control">
+                <option value="">All</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>     
+            </select>
+        </div>
+    </div>
+    <button id="submit" class="btn btn-outline-info mt-3">Search</button><hr />
+</form>
+@* Filter End *@
+
+<table id="example" class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Department</th>
+            <th>Position</th>
+            <th>Joining Date</th>
+            <th>Performance Score</th>
+            <th>Active</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) 
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Email</td>
+            <td>@item.Phone</td>
+            <td>@item.Department</td>
+            <td>@item.Position</td>
+            <td>@item.JoiningDate</td>
+            <td>@(item.LatestScore!= null ? @item.LatestScore : "N/A")</td>
+            <td>@(item.Status ? "Yes" : "No")</td>
+            <td>
+                @Html.ActionLink("Update", "Update", new { id = item.ID }, new { @class = "btn btn-outline-primary" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID }, new
+                    {
+                        @class = "btn btn-outline-danger",
+                        onclick = "return confirm('Are you sure?');"
+                    })
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        // Attach a click event to the submit button
+        $("#submit").click(function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Collect filter input values
+            var filters = {
+                Name: $("#NameFilter").val(),
+                Department: $("#DepartmentFilter").val(),
+                Email: $("#EmailFilter").val(),
+                Phone: $("#PhoneFilter").val(),
+                Position: $("#PositionFilter").val(),
+                MinScore: $("#MinimumScore").val(),
+                MaxScore: $("#MaximumScore").val(),
+                Status: $("#StatusFilter").val()
+            };
+
+            console.log(filters);
+
+            // Make an AJAX request to fetch filtered data
+            $.ajax({
+                url: '@Url.Action("FilteredResults", "Employee")', // Ensure this is the correct action
+                type: 'GET',
+                data: filters,
+                success: function (response) {
+                    // Clear the table body
+                    $("#example tbody").empty();
+
+                    // Populate table with the filtered data
+                    $.each(response, function (index, item) {
+                        console.log(item);
+                        var row = `
+                            <tr>
+                                <td>${item.name}</td>
+                                <td>${item.email}</td>
+                                <td>${item.phone}</td>
+                                <td>${item.department}</td>
+                                <td>${item.position}</td>
+                                <td>${new Date(item.joiningDate).toLocaleDateString()}</td>
+                                    <td>${item.latestScore != null ? item.latestScore : "N/A"}</td>
+                                <td>${item.status ? "Yes" : "No"}</td>
+                                <td>
+                                    <a href="/Employee/Update/${item.id}" class="btn btn-outline-primary">Update</a> |
+                                    <a href="/Employee/Delete/${item.id}" class="btn btn-outline-danger" onclick="return confirm('Are you sure?');">Delete</a>
+                                </td>
+                            </tr>`;
+                        $("#example tbody").append(row);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("An error occurred: " + error);
+                }
+            });
+        });
+    });
+</script>
+
+
